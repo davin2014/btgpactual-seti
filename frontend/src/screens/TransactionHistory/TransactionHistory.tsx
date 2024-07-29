@@ -28,6 +28,7 @@ const TransactionHistory: React.FC = () => {
   }, []);
 
   const handleChangePage = (event: unknown, newPage: number) => {
+    console.log('event ', event);
     setPage(newPage);
   };
 

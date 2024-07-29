@@ -5,6 +5,7 @@ from pydantic import ValidationError
 from pymongo.errors import  PyMongoError
 from app.models.fund import Fund
 from app.db.db import fund_collection
+from app.utils.logging_config import logger
 
 
 
@@ -31,8 +32,10 @@ async def get_fund_by_id(fund_id: str) -> Optional[Fund]:
         raise RuntimeError(f"Unexpected error while retrieving fund with id '{fund_id}': {str(e)}")
     
 
+
 async def create_fund(fund_data: Fund) -> Fund:
     try:
+        logger.info(f"Creating fund: {fund_data}")
         fund_data = fund_data.model_dump(by_alias=True, exclude=["id"])
         result = await fund_collection.insert_one(fund_data)
         if result.inserted_id:

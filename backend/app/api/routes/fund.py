@@ -20,12 +20,17 @@ async def read_fund(fund_id: str):
     raise HTTPException(status_code=404, detail="Fund not found")
 
 
-@router.post("/", response_model=Fund)
-async def create_fund(fund: Fund):
-    return await create_fund(fund)
+
+@router.post("/funds/", response_model=Fund)
+async def create_fund_(fund: Fund):
+    fund = await create_fund(fund)
+    if fund:
+        return fund
+    else:
+        raise HTTPException(status_code=400, detail="Fund not created")
 
 @router.put("/{fund_id}", response_model=Fund)
-async def update_fund(fund_id: str, fund: Fund):
+async def update_fund_(fund_id: str, fund: Fund):
     updated_fund = await update_fund(fund_id, fund)
     if updated_fund:
         return updated_fund
