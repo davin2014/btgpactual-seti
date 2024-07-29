@@ -1,0 +1,25 @@
+.tableContainer {
+    width: 100%;
+    margin: 20px;
+    margin: auto;
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+    min-width: 650px;
+  }
+  
+  .tableCell {
+    text-align: center;
+  }
+
+  .tableHeadCell {
+    font-weight: bold;
+    background-color: #f5f5f5; 
+    color: #001e61; 
+  }
+  
+  .tableBodyCell {
+    color: #333;
+  }

@@ -1,0 +1,12 @@
+curl -X POST http://localhost:8000/api/v1/login/login/access-token \
+-H "Content-Type: application/x-www-form-urlencoded" \
+-d "username=davinson@gmail.com&password=davinson"
+
+deactivate
+source .venv/bin/activate
+.venv/bin/python initialize_db.py
+
+
+uvicorn app.main:app --reload
+
+

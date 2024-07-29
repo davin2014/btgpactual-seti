@@ -1,0 +1,13 @@
+npm run build
+aws s3 sync build/ s3://<ReactAppBucketName>
+
+
+aws ecr create-repository --repository-name fastapi
+docker build -t fastapi .
+docker tag fastapi:latest <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/fastapi:latest
+aws ecr get-login-password --region <AWS_REGION> | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com
+docker push <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/fastapi:latest
+
+
+
+aws cloudformation create-stack --stack-name fastapi-backend-stack --template-body file://backend.yaml --parameters ParameterKey=MongoUri,ParameterValue=<YourMongoDBUri>

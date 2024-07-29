@@ -1,0 +1,12 @@
+/* src/components/Header.css */
+.appBar {
+    position: fixed;
+    width: 100%;
+    background-color: #001e61;
+    height: var(--header-height);
+  }
+  
+  .typography {
+    flex-grow: 1;
+  }
+

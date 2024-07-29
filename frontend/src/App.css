@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+:root {
+  --header-height: 3.5rem;
+  --first-color: hsl(28, 88%, 62%);
+  --title-color: hsl(0, 0%, 95%);
+  --text-color: hsl(0, 0%, 75%);
+  --body-color: hsl(0, 0%, 100%);
+  --body-font: "Montserrat", sans-serif;
+  --second-font: "Dancing Script", cursive;
+  --h2-font-size: 1.25rem;
+  --small-font-size: 0.813rem;
+  --font-semi-bold: 600;
+  --z-tooltip: 10;
+  --z-fixed: 100;
+  --button-bg-color: var(--first-color);
+  --button-text-color: var(--title-color);
+  --input-border-color: var(--text-color);
+}
+
+body {
+  background-color: var(--body-color);
+  color: var(--text-color);
+  font-family: var(--body-font);
+  line-height: 1.6;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--first-color);
+}
+
+a:hover {
+  color: var(--title-color);
+}
+
+button {
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-family: var(--body-font);
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+
+button:hover {
+  background-color: darken(var(--button-bg-color), 10%);
+}
+
+input, textarea {
+  border: 1px solid var(--input-border-color);
+  padding: 0.5rem;
+  font-family: var(--body-font);
+  border-radius: 0.25rem;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--first-color);
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --h2-font-size: 1rem;
+    --small-font-size: 0.75rem;
+  }
+
+  body {
+    padding: 1rem;
+  }
+}
+
+html, body, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .App {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .main-content {
+    flex: 1;
+    overflow: auto;
+    margin-top: var(--header-height);
+  }

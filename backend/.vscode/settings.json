@@ -1,0 +1,10 @@
+{
+    "python.defaultInterpreterPath": ".venv/bin/python",
+    "python.envFile": "${workspaceFolder}/.env",
+    "cSpell.words": [
+        "passlib",
+        "psycopg",
+        "pymongo",
+        "sqlmodel"
+    ]
+}

@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  FastApiCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub "${AWS::StackName}-fastapi-cluster"
+
+  FastApiTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub "${AWS::StackName}-fastapi-task"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: '256'
+      Memory: '512'
+      ContainerDefinitions:
+        - Name: fastapi
+          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/fastapi:latest"
+          PortMappings:
+            - ContainerPort: 80
+          Environment:
+            - Name: MONGO_URI
+              Value: !Ref MongoUri
+
+  FastApiService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref FastApiCluster
+      TaskDefinition: !Ref FastApiTaskDefinition
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets:
+            - subnet-12345678
+          SecurityGroups:
+            - sg-12345678
+
+Parameters:
+  MongoUri:
+    Type: String
+    Description: "MongoDB connection URI"
+
+Outputs:
+  FastApiServiceName:
+    Description: "Name of the ECS service for FastAPI"
+    Value: !Ref FastApiService
