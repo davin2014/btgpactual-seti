@@ -11,3 +11,51 @@ docker push <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/fastapi:latest
 
 
 aws cloudformation create-stack --stack-name fastapi-backend-stack --template-body file://backend.yaml --parameters ParameterKey=MongoUri,ParameterValue=<YourMongoDBUri>
+
+
+
+ssh -i "btg.pem" ec2-user@ec2-3-81-145-52.compute-1.amazonaws.com
+
+rsync -avz --exclude '.venv' -e "ssh -i btg.pem" /Users/davinsonmontoyaramierez/Documents/SETI/backend ec2-user@ec2-3-81-145-52.compute-1.amazonaws.com:/home/ec2-user/
+
+
+
+Parece que estás en una máquina que no usa `apt-get` (probablemente una distribución basada en Red Hat como CentOS o Amazon Linux). En su lugar, puedes usar `yum` o `dnf`.
+
+source .venv/bin/activate
+
+
+### Instalar `tmux` en Amazon Linux o CentOS:
+```sh
+sudo yum install tmux
+```
+
+### Instalar `tmux` en Fedora:
+```sh
+sudo dnf install tmux
+```
+
+### Usar `tmux`:
+1. **Inicia una nueva sesión de `tmux`:**
+   ```sh
+   tmux new -s mysession
+   ```
+
+2. **Ejecuta `uvicorn` dentro de la sesión de `tmux`:**
+   ```sh
+   uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+   ```
+
+3. **Desconéctate de la sesión de `tmux` sin detener el proceso:**
+   - Presiona `Ctrl + b`, luego `d`.
+
+4. **Para reconectarte a la sesión de `tmux`:**
+   ```sh
+   tmux attach -t mysession
+   ```
+
+Esto te permitirá mantener `uvicorn` ejecutándose incluso después de cerrar la terminal.
+
+
+davinson26
+AiYTeXRM6sixoORv

@@ -18,7 +18,7 @@ from typing_extensions import Self
 def parse_cors(v: Any) -> Union[List[str], str]:
     if isinstance(v, str) and not v.startswith("["):
         return [i.strip() for i in v.split(",")]
-    elif isinstance(v, list | str):
+    elif isinstance(v,  Union[list, str] ):
         return v
     raise ValueError(v)
 
@@ -64,7 +64,7 @@ class Settings(BaseSettings):
         )
     
     PROJECT_NAME: str
-    SENTRY_DSN: HttpUrl | None = None
+    SENTRY_DSN: Union[HttpUrl, None]  = None
     POSTGRES_SERVER: str
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str
@@ -87,12 +87,12 @@ class Settings(BaseSettings):
     SMTP_TLS: bool = True
     SMTP_SSL: bool = False
     SMTP_PORT: int = 587
-    SMTP_HOST: str | None = None
-    SMTP_USER: str | None = None
-    SMTP_PASSWORD: str | None = None
+    SMTP_HOST: Union[str, None]  = None
+    SMTP_USER: Union[str, None] = None
+    SMTP_PASSWORD: Union[str, None] = None
     # TODO: update type to EmailStr when sqlmodel supports it
-    EMAILS_FROM_EMAIL: str | None = None
-    EMAILS_FROM_NAME: str | None = None
+    EMAILS_FROM_EMAIL: Union[str, None] = None
+    EMAILS_FROM_NAME: Union[str, None] = None
 
     @model_validator(mode="after")
     def _set_default_emails_from(self) -> Self:
@@ -114,7 +114,7 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER_PASSWORD: str
     USERS_OPEN_REGISTRATION: bool = False
 
-    def _check_default_secret(self, var_name: str, value: str | None) -> None:
+    def _check_default_secret(self, var_name: str, value: Union[str, None]) -> None:
         if value == "changethis":
             message = (
                 f'The value of {var_name} is "changethis", '
