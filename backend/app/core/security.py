@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Any
+from typing import Any, Union
 
 import jwt
 from app.core.security_config import pwd_context
@@ -12,7 +12,7 @@ from app.core.security import pwd_context
 ALGORITHM = "HS256"
 
 
-def create_access_token(subject: str | Any, expires_delta: timedelta) -> str:
+def create_access_token(subject: Union[str, Any], expires_delta: timedelta) -> str:
     expire = datetime.now(timezone.utc) + expires_delta
     to_encode = {"exp": expire, "sub": str(subject)}
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
