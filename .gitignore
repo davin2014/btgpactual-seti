@@ -126,3 +126,4 @@ docker-compose.override.yml
 
 # Node
 /frontend/node_modules
+btg.pem
