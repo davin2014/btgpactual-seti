@@ -1,3 +1,4 @@
+
 curl -X POST http://localhost:8000/api/v1/login/login/access-token \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -d "username=davinson@gmail.com&password=davinson"
@@ -7,6 +8,35 @@ source .venv/bin/activate
 .venv/bin/python initialize_db.py
 
 
+nohup uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload > uvicorn.log 2>&1 &
+
+
 uvicorn app.main:app --reload
 
+
+ssh -i "btg.pem" ec2-user@ec2-100-26-111-175.compute-1.amazonaws.com
+
+aws configure --profile SETI
+
+
+
+
+
+docker run -d \
+  --name mongo-container \
+  -e MONGO_INITDB_ROOT_USERNAME=root \
+  -e MONGO_INITDB_ROOT_PASSWORD=root \
+  -e MONGO_INITDB_DATABASE=db \
+  -p 27017:27017 \
+  992382560327.dkr.ecr.us-east-1.amazonaws.com/mongo-repo:latest
+
+
+
+  git remote set-url origin https://<your-username>:<your-token>@github.com/davin2014/btgpactual-seti.git
+
+
+
+
+
+  
 

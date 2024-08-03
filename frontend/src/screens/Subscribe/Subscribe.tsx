@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { fetchFunds } from '../../services/funds.service';
 import { Fund } from '../../models/fund.model';
 import {
@@ -15,6 +16,8 @@ import { Customer } from '../../models/customer.model';
 import { customerById, updateCustomer } from '../../services/customers.service';
 import { createTransaction } from '../../services/transactions.service';
 import { Transaction } from '../../models/transaction.model';
+import { NumberFormatValues, NumericFormat } from 'react-number-format';
+
 
 const initialBalance = 500000; // COP $500.000
 
@@ -77,14 +80,17 @@ const Subscribe: React.FC = () => {
   };
 
   const handleSubscribe = async () => {
+    
     const fund = funds.find(f => f.name === selectedFund);
     const amount = typeof investmentAmount === 'string' ? parseFloat(investmentAmount) : investmentAmount;
   
     if (fund) {
       if (amount < fund.minimum_amount) {
-        setErrorMessage(`El monto es menor al mínimo requerido para el fondo ${selectedFund}`);
+        toast.error(`El monto es menor al mínimo requerido para el fondo ${selectedFund}`);
+        setErrorMessage('');
       } else if (balance < amount) {
-        setErrorMessage('No tiene saldo disponible');
+        toast.error('No tiene saldo disponible'); 
+        setErrorMessage('');
       } else {
         try {
           await updateCustomerBalance(balance - amount);
@@ -100,6 +106,7 @@ const Subscribe: React.FC = () => {
           const createdTransaction = await createTransaction(transaction);
           console.log(`Transaction created: ${createdTransaction}`);
           setErrorMessage('');
+          toast.success('La inversión fue guardada correctamente'); 
         } catch (error) {
           console.error('Error creating transaction:', error);
           setErrorMessage('Failed to create transaction');
@@ -110,12 +117,18 @@ const Subscribe: React.FC = () => {
     }
   };
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const handleAmountChange = (values: NumberFormatValues) => {
+    const { value } = values;
     if (!isNaN(Number(value)) && Number(value) >= 0) {
       setInvestmentAmount(value);
     }
   };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(amount);
+  };
+
+  
 
   return (
     <Container>
@@ -136,16 +149,20 @@ const Subscribe: React.FC = () => {
       </div>
       <div>
         <Label htmlFor="amount">Monto a invertir:</Label>
-        <Input
+        <NumericFormat
           id="amount"
-          type="number"
           value={investmentAmount}
-          onChange={handleAmountChange}
+          thousandSeparator={true}
+          decimalScale={2}
+          fixedDecimalScale={true}
+          onValueChange={handleAmountChange}
+          prefix="COP "
+          customInput={Input}
         />
       </div>
       <Button onClick={handleSubscribe}>Suscribirse</Button>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-      <Balance>Saldo disponible: COP ${balance}</Balance>
+      <Balance>Saldo disponible: {formatCurrency(balance)}</Balance>
     </Container>
   );
 };

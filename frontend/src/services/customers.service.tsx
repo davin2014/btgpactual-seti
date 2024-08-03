@@ -1,7 +1,7 @@
 import { Customer } from "../models/customer.model";
+
+
 import { API_BASE_URL } from "../config/config";
-
-
 export const customerById = async (id : string): Promise<Customer> => {
     try {
       const response = await fetch(`${API_BASE_URL}customers/customers/${id}`);

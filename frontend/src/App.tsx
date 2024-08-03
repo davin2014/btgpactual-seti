@@ -7,7 +7,8 @@ import Sidebar from './components/Sidebar';
 import Subscribe from './screens/Subscribe/Subscribe';
 import  Unsubscribe  from './screens/Unsubscribe/Unsubscribe';
 import TransactionHistory from './screens/TransactionHistory/TransactionHistory';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css';
 import Funds from './screens/Funds/Funds';
@@ -25,6 +26,7 @@ function App() {
         <Header onMenuClick={toggleDrawer(true)} />
         <Sidebar open={drawerOpen} onClose={toggleDrawer(false)} />
         <main className="main-content">
+        <ToastContainer />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/clients" element={<Home />} />

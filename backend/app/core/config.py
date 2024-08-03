@@ -1,6 +1,14 @@
 import secrets
 import warnings
 from typing import Annotated, Any, Literal, Union, List
+import os
+
+# Obtener la ruta absoluta del archivo global-bundle.pem
+current_dir = os.path.dirname(os.path.abspath(__file__))
+ca_file_path = os.path.join(current_dir, "global-bundle.pem")
+
+# Usar la ruta absoluta en la configuración
+MONGO_TLS_CA_FILE: str = ca_file_path
 
 from pydantic import (
     AnyUrl,
@@ -46,6 +54,10 @@ class Settings(BaseSettings):
         Union[List[AnyUrl], str], BeforeValidator(parse_cors)
     ] = ["http://localhost:5173"]
 
+    
+    
+    
+    
     # MongoDB configuration
     MONGO_SERVER: str
     MONGO_PORT: int = 27017
@@ -65,23 +77,24 @@ class Settings(BaseSettings):
     
     PROJECT_NAME: str
     SENTRY_DSN: Union[HttpUrl, None]  = None
-    POSTGRES_SERVER: str
-    POSTGRES_PORT: int = 5432
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-    POSTGRES_DB: str = ""
+    
+    # POSTGRES_SERVER: str
+    # POSTGRES_PORT: int = 5432
+    # POSTGRES_USER: str
+    # POSTGRES_PASSWORD: str
+    # POSTGRES_DB: str = ""
 
-    @computed_field  # type: ignore[misc]
-    @property
-    def SQLALCHEMY_DATABASE_URI(self) -> PostgresDsn:
-        return MultiHostUrl.build(
-            scheme="postgresql+psycopg",
-            username=self.POSTGRES_USER,
-            password=self.POSTGRES_PASSWORD,
-            host=self.POSTGRES_SERVER,
-            port=self.POSTGRES_PORT,
-            path=self.POSTGRES_DB,
-        )
+    # @computed_field  # type: ignore[misc]
+    # @property
+    # def SQLALCHEMY_DATABASE_URI(self) -> PostgresDsn:
+    #     return MultiHostUrl.build(
+    #         scheme="postgresql+psycopg",
+    #         username=self.POSTGRES_USER,
+    #         password=self.POSTGRES_PASSWORD,
+    #         host=self.POSTGRES_SERVER,
+    #         port=self.POSTGRES_PORT,
+    #         path=self.POSTGRES_DB,
+    #     )
 
     emails_enabled = False
     SMTP_TLS: bool = True
@@ -128,7 +141,7 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def _enforce_non_default_secrets(self) -> Self:
         self._check_default_secret("SECRET_KEY", self.SECRET_KEY)
-        self._check_default_secret("POSTGRES_PASSWORD", self.POSTGRES_PASSWORD)
+    #    self._check_default_secret("POSTGRES_PASSWORD", self.POSTGRES_PASSWORD)
         self._check_default_secret(
             "FIRST_SUPERUSER_PASSWORD", self.FIRST_SUPERUSER_PASSWORD
         )

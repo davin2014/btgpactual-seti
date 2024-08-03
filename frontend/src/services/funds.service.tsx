@@ -40,3 +40,6 @@ export const fetchFunds = async (): Promise<Fund[]> => {
       throw error;
     }
   };
+
+
+

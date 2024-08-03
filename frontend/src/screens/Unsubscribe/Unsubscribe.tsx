@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { getTransactionsByCustomerId, updateTransaction } from '../../services/transactions.service';
 import { fetchFundNames } from '../../services/funds.service';
 import { customerById, updateCustomer } from '../../services/customers.service';
@@ -52,6 +53,7 @@ const Unsubscribe: React.FC = () => {
       setCustomer({ ...customer, balance: newBalance });
 
       setErrorMessage('');
+      toast.success('el fondo se ha desvinculado correctamente'); 
     } catch (error) {
       setErrorMessage('Error unlinking transaction');
     }
